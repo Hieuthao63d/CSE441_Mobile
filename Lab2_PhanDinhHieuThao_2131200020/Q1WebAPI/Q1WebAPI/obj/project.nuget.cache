@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "b+lO3noXorE=",
+  "dgSpecHash": "qJ/kpwITwOE=",
   "success": true,
-  "projectFilePath": "D:\\441\\Q1WebAPI\\Q1WebAPI\\Q1WebAPI.csproj",
+  "projectFilePath": "D:\\CSE441_Mobile\\Lab2_PhanDinhHieuThao_2131200020\\Q1WebAPI\\Q1WebAPI\\Q1WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Phan Thao\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Phan Thao\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
