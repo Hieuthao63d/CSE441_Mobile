@@ -1,18 +1,18 @@
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { 
-    Alert, 
-    StyleSheet, 
-    Text, 
-    TextInput, 
-    TouchableOpacity, 
-    View, 
+import {
+    Alert,
+    Dimensions,
     StatusBar,
-    Dimensions 
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
