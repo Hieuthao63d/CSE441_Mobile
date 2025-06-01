@@ -34,7 +34,7 @@ export default function AddCustomer() {
                 }
             );
             Alert.alert('Success', 'Customer added');
-            router.replace('/customer'); // quay lại trang customer sau khi thêm
+            router.replace('/customer');
         } catch (error) {
             console.log('Add customer error:', error);
             Alert.alert('Error', 'Failed to add customer');
