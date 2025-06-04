@@ -1,15 +1,15 @@
+import { FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    View,
-    Text,
+    ActivityIndicator,
     FlatList,
     StyleSheet,
+    Text,
     TouchableOpacity,
-    ActivityIndicator,
+    View,
 } from 'react-native';
-import axios from 'axios';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useRouter } from 'expo-router'
 
 interface Transaction {
     _id: string;
@@ -28,7 +28,6 @@ export default function TransactionScreen() {
     const fetchTransactions = async () => {
         try {
             const response = await axios.get('https://kami-backend-5rs0.onrender.com/transactions');
-
             const transactionsWithTotal = response.data.map((t: any) => {
                 const total = t.services?.reduce(
                     (sum: number, s: any) => sum + (s.price || 0),
@@ -36,7 +35,6 @@ export default function TransactionScreen() {
                 );
                 return { ...t, total };
             });
-
             setTransactions(transactionsWithTotal);
         } catch (error) {
             console.log('Error fetching transactions:', error);
@@ -81,7 +79,6 @@ export default function TransactionScreen() {
                 Customer: {item.customer?.name || 'N/A'}
             </Text>
         </TouchableOpacity>
-
     );
 
     return (
@@ -94,13 +91,13 @@ export default function TransactionScreen() {
                     keyExtractor={(item) => item._id}
                     renderItem={renderItem}
                     contentContainerStyle={{ paddingBottom: 100 }}
-
-
                 />
-
             )}
 
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => router.push('/transactions/add-transaction')}
+            >
                 <FontAwesome5 name="plus" size={18} color="#fff" />
             </TouchableOpacity>
         </View>

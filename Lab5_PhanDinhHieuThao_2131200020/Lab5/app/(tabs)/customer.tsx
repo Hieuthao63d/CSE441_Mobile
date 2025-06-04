@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-
-
 import {
     View,
     Text,
@@ -12,6 +9,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 interface Customer {
     _id: string;
@@ -31,8 +29,8 @@ export default function CustomerScreen() {
             const response = await axios.get('https://kami-backend-5rs0.onrender.com/customers');
             const customersWithDefault = response.data.map((c: Customer) => ({
                 ...c,
-                totalMoney: c.totalMoney || 0,
-                level: c.level || 'Guest',
+                totalMoney: c.totalMoney ?? 0,
+                level: c.level ?? 'Guest',
             }));
             setCustomers(customersWithDefault);
         } catch (error) {
@@ -47,7 +45,11 @@ export default function CustomerScreen() {
     }, []);
 
     const renderItem = ({ item }: { item: Customer }) => (
-        <View style={styles.card}>
+        <TouchableOpacity
+            style={styles.card}
+            
+            onPress={() => router.push(`/customers/${item._id as string}`)}
+        >
             <View>
                 <Text style={styles.label}><Text style={styles.bold}>Customer:</Text> {item.name}</Text>
                 <Text style={styles.label}><Text style={styles.bold}>Phone:</Text> {item.phone}</Text>
@@ -59,10 +61,14 @@ export default function CustomerScreen() {
                 </Text>
             </View>
             <View style={styles.levelContainer}>
-                <FontAwesome5 name="crown" size={16} color="#ffb703" />
+                <FontAwesome5
+                    name="crown"
+                    size={16}
+                    color={item.level === 'Member' ? '#ffb703' : '#ccc'}
+                />
                 <Text style={styles.levelText}>{item.level}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     return (
@@ -82,9 +88,8 @@ export default function CustomerScreen() {
                 style={styles.addButton}
                 onPress={() => router.push('/add-customer')}
             >
-                <FontAwesome5 name="plus" size={20} color="#fff" />
+                <FontAwesome5 name="plus" size={18} color="#fff" />
             </TouchableOpacity>
-
         </View>
     );
 }

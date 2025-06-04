@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
     View,
@@ -6,11 +6,15 @@ import {
     StyleSheet,
     ActivityIndicator,
     ScrollView,
+    TouchableOpacity,
+    Alert,
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TransactionDetail() {
     const { id } = useLocalSearchParams();
+
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -83,6 +87,54 @@ export default function TransactionDetail() {
                     highlight
                 />
             </View>
+            <TouchableOpacity
+                style={{
+                    backgroundColor: '#ef476f',
+                    padding: 14,
+                    marginTop: 30,
+                    borderRadius: 8,
+                }}
+                onPress={() => {
+                    Alert.alert(
+                        'Warning',
+                        'Are you sure you want to cancel this transaction? This will affect the customer transaction information.',
+                        [
+                            { text: 'CANCEL', style: 'cancel' },
+                            {
+                                text: 'YES',
+                                style: 'destructive',
+                                onPress: async () => {
+                                    try {
+                                        const token = await AsyncStorage.getItem('loginToken');
+                                        if (!token) {
+                                            Alert.alert('Error', 'Login token missing. Please log in again.');
+                                            return;
+                                        }
+
+                                        console.log('Deleting transaction:', id);
+                                        console.log('Token:', token);
+
+                                        await axios.delete(`https://kami-backend-5rs0.onrender.com/transactions/${id}`, {
+                                            headers: { Authorization: `Bearer ${token}` },
+                                        });
+
+                                        Alert.alert('Deleted', 'Transaction canceled successfully.');
+                                        router.replace('/transaction');
+                                    } catch (err: any) {
+                                        console.log('Cancel error:', err.response?.data || err.message);
+                                        Alert.alert('Error', 'Could not cancel transaction. Please try again.');
+                                    }
+                                }
+                            },
+                        ]
+                    );
+                }}
+            >
+                <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>
+                    Cancel Transaction
+                </Text>
+            </TouchableOpacity>
+
         </ScrollView>
     );
 }
